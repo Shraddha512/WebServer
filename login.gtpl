@@ -8,7 +8,7 @@
     <input type="checkbox" name="interest" value="basketball">Basketball
     <input type="checkbox" name="interest" value="tennis">Tennis
     Username:<input type="text" name="username">
-    Password:<input type="password" name="password
+    Password:<input type="password" name="password">
     <input type="hidden" name="token" value="{{.}}">
     <input type="submit" value="Login">
 </form>

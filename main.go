@@ -44,12 +44,10 @@ func login(w http.ResponseWriter, r *http.Request) {
 		} else {
 
 		}
-		if len(r.Form["username"][0]) == 0 {
-			fmt.Println("Empty Username. Please enter your Username")
-		} else {
-			fmt.Println("username:", r.Form["username"])
-		}
-		fmt.Println("password:", r.Form["password"])
+		fmt.Println("username length:", len(r.Form["username"][0]))
+		fmt.Println("username:", template.HTMLEscapeString(r.Form.Get("username"))) // print in server side
+		fmt.Println("password:", template.HTMLEscapeString(r.Form.Get("password")))
+		template.HTMLEscape(w, []byte(r.Form.Get("username"))) // respond to client
 	}
 
 }
