@@ -1,11 +1,15 @@
 package main
 
 import (
+	"crypto/md5"
 	"fmt"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
+	"time"
 )
 
 func sayHelloName(w http.ResponseWriter, r *http.Request) {
@@ -25,11 +29,26 @@ func sayHelloName(w http.ResponseWriter, r *http.Request) {
 func login(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method) //get request Method
 	if r.Method == "GET" {
+		crutime := time.Now().Unix()
+		h := md5.New()
+		io.WriteString(h, strconv.FormatInt(crutime, 10))
+		token := fmt.Sprintf("%x", h.Sum(nil))
+
 		t, _ := template.ParseFiles("login.gtpl")
-		t.Execute(w, nil)
+		t.Execute(w, token)
 	} else {
 		r.ParseForm()
-		fmt.Println("username:", r.Form["username"])
+		token := r.Form.Get("token")
+		if token != "" {
+			//Check token validity
+		} else {
+
+		}
+		if len(r.Form["username"][0]) == 0 {
+			fmt.Println("Empty Username. Please enter your Username")
+		} else {
+			fmt.Println("username:", r.Form["username"])
+		}
 		fmt.Println("password:", r.Form["password"])
 	}
 
